@@ -9,7 +9,7 @@
 #else
  #define PROGMEM
  #define pgm_read_byte(addr) (*(const unsigned char *)(addr))
- #define WIRE Wire1
+ #define WIRE Wire
 #endif
 
 /* M41T62 Register Map
@@ -462,7 +462,7 @@ void RTC_M41T62::alarmSet(const DateTime& dt) {
   WIRE._I2C_WRITE(bin2bcd(dt.hour()));
   WIRE._I2C_WRITE(bin2bcd(dt.minute()));
   WIRE._I2C_WRITE(bin2bcd(dt.second()));
-  WIRE._I2C_WRITE(0);
+  WIRE._I2C_WRITE((byte)0x00);
   WIRE.endTransmission();
 }
 
@@ -485,7 +485,7 @@ int RTC_M41T62::checkFlags(){
 void RTC_M41T62::pointerReset(){
   // reset address pointer to 0 per datasheet note pg23
   WIRE.beginTransmission(M41T62_ADDRESS);
-  WIRE._I2C_WRITE(0);
+  WIRE.write((byte)0x00);
   WIRE.endTransmission();
 }
 
@@ -507,7 +507,7 @@ DateTime RTC_Millis::now() {
 
 void RTC_M41T62::printAllBits(){
   WIRE.beginTransmission(M41T62_ADDRESS);
-  WIRE._I2C_WRITE(0);	
+  WIRE._I2C_WRITE((byte)0x00);	
   WIRE.endTransmission();
 
   WIRE.requestFrom(M41T62_ADDRESS, 16);
@@ -518,7 +518,7 @@ void RTC_M41T62::printAllBits(){
   }
   // reset address pointer to 0 per datasheet note pg23
   WIRE.beginTransmission(M41T62_ADDRESS);
-  WIRE._I2C_WRITE(0);
+  WIRE._I2C_WRITE((byte)0x00);
   WIRE.endTransmission();
 }
 
